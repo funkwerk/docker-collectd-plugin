@@ -279,7 +279,8 @@ class DockerPlugin:
     def init_callback(self):
         self.client = docker.APIClient(
             base_url=self.docker_url,
-            version=DockerPlugin.MIN_DOCKER_API_VERSION)
+            version=DockerPlugin.MIN_DOCKER_API_VERSION,
+            max_pool_size=128)
         self.client.timeout = self.timeout
 
         # Check API version for stats endpoint support.
