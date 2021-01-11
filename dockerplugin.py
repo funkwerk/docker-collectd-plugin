@@ -105,8 +105,8 @@ class BlkioStats(Stats):
                              type_instance=key, t=t)
                 else:
                     collectd.warning(('Unexpected number of blkio stats for '
-                                   'container {container}!')
-                                  .format(container=_c(container)))
+                                   'container {container}: {num}!')
+                                  .format(container=_c(container), num=len(values)))
 
 
 class CpuStats(Stats):
@@ -205,12 +205,11 @@ class ContainerStats(threading.Thread):
         failures = 0
         while not self.stop:
             try:
-
-                if not self._stream:
+                if self._stream:
                     if not self._feed:
                         self._feed = self._client.stats(self._container,
                                                         decode=True)
-                    self._stats = self._feed.next()
+                    self._stats = next(self._feed)
                 else:
                     self._stats = self._client.stats(self._container,
                                                      decode=True, stream=False)
