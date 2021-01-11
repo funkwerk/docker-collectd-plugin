@@ -238,10 +238,7 @@ class ContainerStats(threading.Thread):
 
     @property
     def stats(self):
-        """Wait, if needed, for stats to be available and return the most
-        recently read stats data, parsed as JSON, for the container."""
-        while not self._stats:
-            pass
+        """return the most recently read stats data, parsed as JSON, for the container."""
         return self._stats
 
 
@@ -330,6 +327,10 @@ class DockerPlugin:
 
                 # Get and process stats from the container.
                 stats = self.stats[container['Id']].stats
+                if not stats:
+                    collectd.warning(('stats not yet available for container {container}'
+                                      ).format(container=_c(container)))
+                    continue
                 t = stats['read']
                 for klass in self.CLASSES:
                     klass.read(container, stats, t)
