@@ -1,2 +1,2 @@
 py-dateutil
-docker-py>=1.0.0
+docker>=4.4.1
