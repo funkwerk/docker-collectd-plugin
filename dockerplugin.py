@@ -144,7 +144,8 @@ class CpuStats(Stats):
 class NetworkStats(Stats):
     @classmethod
     def read(cls, container, stats, t):
-        items = sorted(stats['networks'].items())
+        # TODO multiple networks
+        items = sorted(next(iter(stats['networks'].values())).items())
         cls.emit(container, 'network.usage', [x[1] for x in items], t=t)
 
 
@@ -374,7 +375,9 @@ if __name__ == '__main__':
         plugin.docker_url = sys.argv[1]
 
     if plugin.init_callback():
-        plugin.read_callback()
+        while True:
+            plugin.read_callback()
+            time.sleep(1)
 
 # Normal plugin execution via CollectD
 else:
