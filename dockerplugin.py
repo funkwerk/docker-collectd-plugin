@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- encoding: utf-8 -*-
 #
 # Collectd plugin for collecting docker container stats
@@ -250,7 +250,7 @@ class DockerPlugin:
     """
 
     DEFAULT_BASE_URL = 'unix://var/run/docker.sock'
-    DEFAULT_DOCKER_TIMEOUT = 5
+    DEFAULT_DOCKER_TIMEOUT = 60
 
     # The stats endpoint is only supported by API >= 1.17
     MIN_DOCKER_API_VERSION = '1.21'
